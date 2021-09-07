@@ -11,6 +11,9 @@ import { DeleteCardPopup } from "./DeleteCardPopup";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import { api } from "../utils/api";
 
+import { Route, Redirect, Switch,  useHistory } from 'react-router-dom';
+import { ProtectedRoute } from './ProtectedRoute';
+
 export function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
@@ -20,6 +23,7 @@ export function App() {
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [isLoad, setIsLoad] = React.useState(false);
   const [cardToDelete, setCardToDelete] = React.useState(null);
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
   //API
   React.useEffect(() => {
@@ -149,6 +153,20 @@ export function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Header />
+        <Switch>
+        <ProtectedRoute/>
+        <Route path="/sign-in">
+
+        </Route>
+
+        <Route path="/sign-up">
+
+        </Route>
+
+        <Route>
+          {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+        </Route>
+        </Switch>
         <Main
           onEditAvatar={handleEditAvatarClick}
           onEditProfile={handleEditProfileClick}
