@@ -3,7 +3,6 @@ import React from "react";
 import { Header } from "./Header";
 import { Main } from "./Main";
 import { Footer } from "./Footer";
-import { PopupWithForm } from "./PopupWithForm";
 import { EditAvatarPopup } from "./EditAvatarPopup";
 import { AddPlacePopup } from "./AddPlacePopup";
 import { EditProfilePopup } from "./EditProfilePopup";
