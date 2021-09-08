@@ -1,5 +1,10 @@
 .header__link {
   transition: opacity 0.3s linear;
+  font-size: 18px;
+  line-height: 122%;
+  text-align: right;
+  color: #FFFFFF;
+  text-decoration: none;
 }
 
 .header__link:hover {

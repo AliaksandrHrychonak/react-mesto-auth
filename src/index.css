@@ -45,6 +45,7 @@
 @import "./blocks/popup/__input/popup__input.css";
 @import "./blocks/popup/__title/popup__title.css";
 @import "./blocks/popup/__title/theme/popup__title_theme_delete.css";
+@import "./blocks/popup/__title/theme/popup__tile_theme_tooltip.css";
 @import "./blocks/popup/__button-save/popup__button-save.css";
 @import "./blocks/popup/__button-save/_disable/popup__button-save_disable.css";
 @import "./blocks/popup/__input/_border/popup__input_border_disabled.css";
@@ -52,8 +53,23 @@
 @import "./blocks/popup/__input/_value/popup__input_value_job.css";
 @import "./blocks/popup/__image/popup__image.css";
 @import "./blocks/popup/__description/popup__description.css";
+@import "./blocks/popup/__image-tooltip/popup__image-tooltip.css";
+@import "./blocks/popup/__image-tooltip/_type/popup__image-tooltip_type_not.css";
+@import "./blocks/popup/__image-tooltip/_type/popup__image-tooltip_type_done.css";
 /* footer */
 @import "./blocks/footer/footer.css";
 @import "./blocks/footer/__copyright/footer__copyright.css";
 
 @import "./blocks/error/error.css";
+
+/* ACCESS */
+@import "./blocks/access/access.css";
+@import "./blocks/access/__form/access__form.css";
+@import "./blocks/access/__title/access__title.css";
+@import "./blocks/access/__input/access__input.css";
+@import "./blocks/access/__button-submit/access__button-submit.css";
+@import "./blocks/access/__box-input/access__box-input.css";
+@import "./blocks/access/__box-input/_type/access__box-input_type_margin.css";
+@import "./blocks/access/__input-error/access__input-error.css";
+@import "./blocks/access/__option/access__option.css";
+@import "./blocks/access/__login-link/access__login-link.css";
