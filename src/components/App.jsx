@@ -59,7 +59,6 @@ export function App() {
         if (res) {
           setUserData(res.data)
           console.log(res.data);
-          console.log(jwt);
           handleLogIn();
           history.push('/');
         }

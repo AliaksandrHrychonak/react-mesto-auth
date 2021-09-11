@@ -16,12 +16,12 @@ export function Header(props) {
 
       <Switch>
         <Route exact path="/">
-          <div className="header__wrapper">
+          <div className="header__box-access">
             <p className="header__mail">{props.userData.email}</p>
             <Link
               to="/sign-in"
               onClick={signOut}
-              className="header__link"
+              className="header__link header__link_type_access"
             >
               Выйти
             </Link>

@@ -15,3 +15,11 @@
 .access__button-submit:hover {
   opacity: 0.85;
 }
+
+@media screen and (max-width: 500px) {
+  .access__button-submit {
+    font-size: 16px;
+    line-height: 19px;
+    margin-top: 173px;
+  }
+}

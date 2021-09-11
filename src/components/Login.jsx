@@ -22,7 +22,6 @@ export const Login = (props) => {
       if (data.token) {
           props.handleLogIn();
           history.push('/');
-          props.handleTooltipOpen();
       } 
   })
   .catch(() => {

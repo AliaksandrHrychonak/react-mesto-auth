@@ -8,6 +8,9 @@
 @import "./blocks/header/header.css";
 @import "./blocks/header/__link/header__link.css";
 @import "./blocks/header/__logo/header__logo.css";
+@import "./blocks/header/__box-access/header__box-access.css";
+@import "./blocks/header/__mail/header__mail.css";
+@import "./blocks/header/__link/_type/header__link_type_access.css";
 /* profile */
 @import "./blocks/profile/profile.css";
 @import "./blocks/profile/__item/profile__item.css";

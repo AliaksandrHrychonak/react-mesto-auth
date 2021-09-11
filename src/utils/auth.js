@@ -10,6 +10,8 @@ export const registration = ( email, password ) => {
     body: JSON.stringify({ email, password })
   })
   .then((res) => {
+    console.log(email);
+    console.log(password);
     if (res.status === 201){
       return res.json();
     }
