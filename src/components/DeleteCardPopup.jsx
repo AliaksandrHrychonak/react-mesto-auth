@@ -8,9 +8,9 @@ export const DeleteCardPopup = (props) => {
   return (
     <div
       className={`popup popup_type_delete ${props.card ? "popup_opened" : " "}`}
-      onClick={props.onClose}
+      onMouseDown={props.onClose}
     >
-      <div className="popup__container" onClick={(evt) => {evt.stopPropagation()}}>
+      <div className="popup__container" onMouseDown={(evt) => {evt.stopPropagation()}}>
         <button
           className="popup__button-close"
           type="button"

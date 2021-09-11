@@ -18,9 +18,9 @@ export function ImagePopup(props) {
   return (
     <div
       className={`popup popup_type_image ${props.card ? "popup_opened" : " "}`}
-      onClick={props.onClose}
+      onMouseDown={props.onClose}
     >
-      <figure className="popup__container-image" onClick={(evt) => {evt.stopPropagation()}}>
+      <figure className="popup__container-image" onMouseDown={(evt) => {evt.stopPropagation()}}>
         <img
           src={props.card && props.card.link}
           alt={props.card && props.card.name}
