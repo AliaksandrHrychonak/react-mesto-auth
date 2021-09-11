@@ -1,9 +1,23 @@
 import React from 'react';
 
 export const InfoTooltip = (props) => {
+
+  React.useEffect(() => {
+    const handleEsc = (event) => {
+       if (event.keyCode === 27) {
+        props.onClose()
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, []);
+
   return (
-    <div className={`popup ${ props.isOpen ? "popup_opened" : " " }` }>
-      <div className="popup__container">
+    <div className={`popup ${ props.isOpen ? "popup_opened" : " " }` } onMouseDown={props.onClose}>
+      <div className="popup__container" onMouseDown={(evt) => {evt.stopPropagation()}}>
         <button
         className="popup__button-close"
         type="button"
