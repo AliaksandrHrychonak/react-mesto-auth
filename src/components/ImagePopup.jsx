@@ -1,10 +1,26 @@
 import React from "react";
 export function ImagePopup(props) {
+
+  React.useEffect(() => {
+    const handleEsc = (event) => {
+       if (event.keyCode === 27) {
+        props.onClose()
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, []);
+
+
   return (
     <div
       className={`popup popup_type_image ${props.card ? "popup_opened" : " "}`}
+      onClick={props.onClose}
     >
-      <figure className="popup__container-image">
+      <figure className="popup__container-image" onClick={(evt) => {evt.stopPropagation()}}>
         <img
           src={props.card && props.card.link}
           alt={props.card && props.card.name}

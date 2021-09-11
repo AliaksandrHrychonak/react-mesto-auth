@@ -1,12 +1,27 @@
 import React from "react";
 export function PopupWithForm(props) {
+
+  React.useEffect(() => {
+    const handleEsc = (event) => {
+       if (event.keyCode === 27) {
+        props.onClose()
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+    };
+  }, []);
+
   return (
     <div
       className={`popup popup_type_${props.name} ${
         props.isOpen ? "popup_opened" : " "
       }`}
+      onClick={props.onClose}
     >
-      <div className="popup__container">
+      <div className="popup__container" onClick={(evt) => {evt.stopPropagation()}}>
         <h3 className="popup__title">{props.title}</h3>
         <form
           className="popup__form"
