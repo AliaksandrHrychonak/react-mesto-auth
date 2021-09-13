@@ -226,8 +226,11 @@ export function App() {
   const handleAuthorization = (email, password) => {
     auth
       .authorization(email, password)
-      .then(() => {
-        history.push("/")
+      .then((res) => {
+        if (res) {
+          handleLogIn(true);
+          history.push("/")
+        }
       })
       .catch((err) => {
         if(err.status === 400){
