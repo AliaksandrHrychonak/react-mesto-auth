@@ -1,79 +1,59 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
+class Auth {
+  constructor(config) {
+    this._baseUrl = config.baseUrl; 
+    this._headers = config.headers;
+  }
 
-export const registration = ( email, password ) => {
-  return fetch(`${BASE_URL}/signup`, {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ email, password })
-  })
-  .then((res) => {
-    console.log(email);
-    console.log(password);
-    if (res.status === 201){
+  _handleResponce(res) {
+    if (res.ok) {
       return res.json();
     }
-    if (res.status === 400) {
-        console.log('err');
-        return false
-    }
-  })
-  .catch((err) => console.log(err))
-}; 
+    return Promise.reject(`Ошибка ${res.status}`);
+  }
 
-export const authorization = (email, password) => {
-    return fetch(`${BASE_URL}/signin`, {
+  registration = ( email, password ) => {
+    return fetch(`${this._baseUrl}/signup`, {
       method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        "Content-Type": "application/json",
-
-      },
+      headers: this._headers,
       body: JSON.stringify({ email, password })
     })
-    .then((res) => {
-      if (res.status === 200){
-        return res.json();
-      }
-      if (res.status === 400) {
-          console.log('400');
-          return false
-      }
-      if (res.status === 401) {
-        console.log('401');
-        return false
-    }
+    .then(this._handleResponce)
+  }; 
+
+  authorization = (email, password) => {
+    return fetch(`${this._baseUrl}/signin`, {
+      method: 'POST',
+      headers: this._headers,
+      body: JSON.stringify({ email, password })
     })
+    .then(this._handleResponce)
     .then((data) => {
       if (data.token){
+        console.log(data.token);
         localStorage.setItem('jwt', data.token);
         return data;
       }
     })
-    .catch((err) => console.log(err))
-  }; 
+  };
 
-  export const getToken = (token) => {
-    return fetch(`${BASE_URL}/users/me`, {
+  getToken = (token) => {
+    return fetch(`${this._baseUrl}/users/me`, {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
-
       }
     })
-    .then((res) => {
-      if (res.status === 200){
-        return res.json();
-      }
-      if (res.status === 401) {
-        console.log('401');
-        return false
-    }
-    })
-    .then(data => data)
-    .catch((err) => console.log(err))
+    .then(this._handleResponce)
+    .then(data => data) 
   }
+}
+
+export const auth = new Auth({
+  baseUrl: "https://auth.nomoreparties.co",
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  },
+})

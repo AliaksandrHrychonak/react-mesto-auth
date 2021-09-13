@@ -10,7 +10,7 @@ export const EditProfilePopup = (props) => {
   React.useEffect(() => {
     setName(currentUser.name);
     setInfo(currentUser.about);
-  }, [currentUser]);
+  }, [currentUser, props.isOpen]);
 
   const handleSubmit = (evt) => {
     evt.preventDefault();

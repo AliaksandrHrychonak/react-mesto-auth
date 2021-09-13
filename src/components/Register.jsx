@@ -1,9 +1,8 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
-import * as auth from "../utils/auth";
+import { Link } from "react-router-dom";
 
-export const Register = () => {
-  const history = useHistory();
+export const Register = ({onSubmit}) => {
+
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -17,17 +16,11 @@ export const Register = () => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-
-    auth.registration(email, password)
-    .then((res) => {
-      if (res) {
-        history.push("/sign-in");
-      }
-    });
+    onSubmit(email,password)
   };
 
   return (
-    <section className="access" onSubmit={handleSubmit}>
+    <section className="access">
       <form onSubmit={handleSubmit} className="access__form">
         <h1 className="access__title">Регистрация</h1>
         <div className="access__box-input">

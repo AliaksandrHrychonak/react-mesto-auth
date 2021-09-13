@@ -1,9 +1,7 @@
 import React from "react";
-import { useHistory } from 'react-router-dom';
-import * as auth from '../utils/auth';
 
-export const Login = (props) => {
-  const history = useHistory();
+export const Login = ({onSubmit}) => {
+
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
@@ -17,16 +15,7 @@ export const Login = (props) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault()
-    auth.authorization(email, password)
-    .then((data) => {
-      if (data.token) {
-          props.handleLogIn();
-          history.push('/');
-      } 
-  })
-  .catch(() => {
-      props.handleTooltipOpen();
-  })
+    onSubmit(email, password)
 }
 
   return (

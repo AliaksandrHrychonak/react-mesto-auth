@@ -14,19 +14,21 @@ import { Login } from "./Login";
 import { Register } from "./Register";
 import { Route, Redirect, Switch, useHistory } from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute";
-import * as auth from "../utils/auth";
-import { InfoTooltip } from "./InfoTooltip"
+import { auth } from "../utils/auth";
+import { InfoTooltip } from "./InfoTooltip";
 
 export function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
-  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
+  const [isEditProfilePopupOpen, setEditProfilePopupOpen] =
+    React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [isLoad, setIsLoad] = React.useState(false);
   const [cardToDelete, setCardToDelete] = React.useState(null);
-  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = React.useState(false);
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] =
+    React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const history = useHistory();
   const [userData, setUserData] = React.useState({});
@@ -51,26 +53,45 @@ export function App() {
   }, []);
 
   React.useEffect(() => {
-    if (localStorage.getItem('jwt')) {
-      const jwt = localStorage.getItem('jwt'); 
+    if (localStorage.getItem("jwt")) {
+      const jwt = localStorage.getItem("jwt");
       console.log(jwt);
       auth.getToken(jwt)
       .then((res) => {
         if (res) {
-          setUserData(res.data)
+          setUserData(res.data);
           console.log(res.data);
-          handleLogIn();
-          history.push('/');
+          handleLogIn(true);
+          history.push("/");
         }
       })
+      .catch((err) => {
+        handleLogIn(false);
+        if (err.status === 400) {
+          console.log('400 — Токен не передан или передан не в том формате')
+          return
+        }
+        if (err.status === 401) {
+          console.log("401 — Переданный токен некорректен")
+          return
+        }
+        console.error(err)
+      })
     }
-}, [history]);
+  }, [history]);
 
   const handleCardLike = (card) => {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
-    api.toggleLikeCard(card._id, !isLiked).then((newCard) => {
-      setCards((state) => state.map((c) => (c._id === card._id ? newCard : c)));
-    });
+    api
+      .toggleLikeCard(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((c) => (c._id === card._id ? newCard : c))
+        );
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   };
 
   const handleCardDelete = (card) => {
@@ -79,12 +100,12 @@ export function App() {
       .deleteCard(card._id)
       .then(() => {
         setCards(cards.filter((c) => c._id !== card._id));
+        setCardToDelete(null);
       })
       .catch((err) => {
         console.error(err);
       })
       .finally(() => {
-        setCardToDelete(null);
         setIsLoad(true);
       });
   };
@@ -124,9 +145,11 @@ export function App() {
   const handleLogIn = () => {
     setLoggedIn(true);
   };
+
   const handleLogOut = () => {
     setLoggedIn(true);
   };
+
   const handleTooltipOpen = () => {
     setIsInfoTooltipPopupOpen(true);
   };
@@ -181,13 +204,48 @@ export function App() {
       });
   };
 
+  const handleRegistration = (email, password) => {
+    auth
+      .registration(email, password)
+      .then((res) => {
+        handleTooltipOpen();
+        if (res) {
+          history.push("/sign-in");
+        }
+      })
+      .catch((err) => {
+        handleTooltipOpen();
+        if(err.status === 400){
+          console.log('не передано одно из полей')
+          return
+        }
+        console.error(err);
+      });
+  };
+
+  const handleAuthorization = (email, password) => {
+    auth
+      .authorization(email, password)
+      .then(() => {
+        history.push("/")
+      })
+      .catch((err) => {
+        if(err.status === 400){
+          console.log("400 - не передано одно из полей")
+          return
+        }
+        if (err.status === 401){
+          console.log("401 - пользователь с email не найден")
+          return
+        }
+        console.error(err);
+      });
+  };
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header
-          userData = {userData}
-          handleLogOut={handleLogOut}
-        />
+        <Header userData={userData} handleLogOut={handleLogOut} />
         <Switch>
           <ProtectedRoute
             exact
@@ -204,17 +262,20 @@ export function App() {
           />
 
           <Route path="/sign-in">
-            <Login handleLogIn={handleLogIn} handleTooltipOpen={handleTooltipOpen}/>
+            <Login
+              onSubmit={handleAuthorization}
+              handleLogIn={handleLogIn}
+              handleTooltipOpen={handleTooltipOpen}
+            />
           </Route>
 
           <Route path="/sign-up">
-            <Register />
+            <Register onSubmit={handleRegistration}/>
           </Route>
 
           <Route>
             {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
           </Route>
-
         </Switch>
         <Footer />
         <EditProfilePopup
@@ -237,8 +298,6 @@ export function App() {
         />
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
         <DeleteCardPopup
-          title="Вы уверены?"
-          name="CardDelete"
           card={cardToDelete}
           onClose={closeAllPopups}
           onClick={handleCardDelete}

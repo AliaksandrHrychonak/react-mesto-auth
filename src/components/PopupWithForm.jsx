@@ -16,13 +16,11 @@ export function PopupWithForm(props) {
 
   return (
     <div
-      className={`popup popup_type_${props.name} ${
-        props.isOpen ? "popup_opened" : " "
-      }`}
+      className={`popup popup_type_${props.name} ${props.isOpen ? "popup_opened" : " "}`}
       onMouseDown={props.onClose}
     >
       <div className="popup__container" onMouseDown={(evt) => {evt.stopPropagation()}}>
-        <h3 className="popup__title">{props.title}</h3>
+        <h3 className={`popup__title ${props.titleTheme || ""}`}>{props.title}</h3>
         <form
           className="popup__form"
           name={props.name}
