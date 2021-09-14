@@ -46,7 +46,6 @@ class Auth {
       }
     })
     .then(this._handleResponce)
-    .then(data => data) 
   }
 }
 

@@ -31,7 +31,7 @@ export function App() {
     React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const history = useHistory();
-  const [userData, setUserData] = React.useState({});
+  const [userEmail, setUserEmail] = React.useState(null);
   //API
   React.useEffect(() => {
     api
@@ -59,8 +59,7 @@ export function App() {
       auth.getToken(jwt)
       .then((res) => {
         if (res) {
-          setUserData(res.data);
-          console.log(res.data);
+          setUserEmail(res.data.email);
           handleLogIn(true);
           history.push("/");
         }
@@ -148,6 +147,8 @@ export function App() {
 
   const handleLogOut = () => {
     setLoggedIn(true);
+    localStorage.removeItem('jwt');
+    setUserEmail(null);
   };
 
   const handleTooltipOpen = () => {
@@ -228,6 +229,7 @@ export function App() {
       .authorization(email, password)
       .then((res) => {
         if (res) {
+          setUserEmail(email);
           handleLogIn(true);
           history.push("/")
         }
@@ -248,7 +250,7 @@ export function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
-        <Header userData={userData} handleLogOut={handleLogOut} />
+        <Header userEmail={userEmail} handleLogOut={handleLogOut}/>
         <Switch>
           <ProtectedRoute
             exact

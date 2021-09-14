@@ -2,12 +2,6 @@ import logo from "../images/logo.svg";
 import { Route, Switch, Link } from "react-router-dom";
 
 export function Header(props) {
-  
-  const signOut = () => {
-    localStorage.removeItem('jwt');
-    props.handleLogOut();
-  }
-
   return (
     <header className="header">
       <a href="/index.html" className="header__link" target="_blank">
@@ -17,10 +11,10 @@ export function Header(props) {
       <Switch>
         <Route exact path="/">
           <div className="header__box-access">
-            <p className="header__mail">{props.userData.email}</p>
+            <p className="header__mail">{props.userEmail}</p>
             <Link
               to="/sign-in"
-              onClick={signOut}
+              onClick={props.handleLogOut}
               className="header__link header__link_type_access"
             >
               Выйти
