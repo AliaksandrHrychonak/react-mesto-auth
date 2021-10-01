@@ -16,24 +16,26 @@ import { Route, Redirect, Switch, useHistory } from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { auth } from "../utils/auth";
 import { InfoTooltip } from "./InfoTooltip";
+import { Loader } from "./Loader";
 
 export function App() {
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   const [isEditAvatarPopupOpen, setEditAvatarPopupOpen] = React.useState(false);
-  const [isEditProfilePopupOpen, setEditProfilePopupOpen] =
-    React.useState(false);
+  const [isEditProfilePopupOpen, setEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setAddPlacePopupOpen] = React.useState(false);
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [isLoad, setIsLoad] = React.useState(false);
   const [cardToDelete, setCardToDelete] = React.useState(null);
-  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] =
-    React.useState(false);
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = React.useState(false);
   const [loggedIn, setLoggedIn] = React.useState(false);
-  const history = useHistory();
   const [userEmail, setUserEmail] = React.useState(null);
+  const [isLoading, setisLoading] = React.useState(false)
+  const history = useHistory();
+
   //API
   React.useEffect(() => {
+    setisLoading(true)
     api
       .getInitialCards()
       .then((res) => {
@@ -41,7 +43,10 @@ export function App() {
       })
       .catch((err) => {
         console.error(err);
-      });
+      })
+      .finally(() => {
+        setisLoading(false)
+      })
     api
       .getUserInfo()
       .then((res) => {
@@ -53,6 +58,7 @@ export function App() {
   }, []);
 
   React.useEffect(() => {
+    setisLoading(true)
     if (localStorage.getItem("jwt")) {
       const jwt = localStorage.getItem("jwt");
       console.log(jwt);
@@ -265,7 +271,7 @@ export function App() {
             onCardDelete={handleDeleteCardClick}
             cards={cards}
           />
-
+          
           <Route path="/sign-in">
             <Login
               onSubmit={handleAuthorization}
@@ -283,6 +289,7 @@ export function App() {
           </Route>
         </Switch>
         <Footer />
+        <Loader isLoading={isLoading}/>
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}

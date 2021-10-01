@@ -76,3 +76,6 @@
 @import "./blocks/access/__input-error/access__input-error.css";
 @import "./blocks/access/__option/access__option.css";
 @import "./blocks/access/__login-link/access__login-link.css";
+
+@import "./blocks/loader/loader.css";
+@import "./blocks/loader/__spinner/loader__spinner.css";
