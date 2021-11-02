@@ -1,6 +1,13 @@
 # Проектная работа Mesto-React-Auth
 #### В данной работе реализованна Авторизация-Регистрация-Интендефикация пользователя.
 
+### Бекенд часть: 
+#### Github: https://github.com/AliaksandrHrychonak/express-mesto
+
+### Полная версия работы фронтенд + бекенд :
+#### Посмотреть страницу: https://alexgrichenokmesto.nomoredomains.monster/
+#### Github : https://github.com/AliaksandrHrychonak/react-mesto-api-full
+
 ### Описание:
 - Веб-страница с возможностью создавать учётную запись
 - Изменять информацию пользователя
